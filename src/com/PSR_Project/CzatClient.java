@@ -4,16 +4,21 @@ package com.PSR_Project;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.rmi.registry.*;
-import java.util.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.Vector;
 
 public class CzatClient extends JFrame {
 
     //GUI
     private JButton polacz, rozlacz;
+    private JButton dobierz, stoj;
     private JPanel panel;
-    private JTextField host, wiadomosc;
-    private JTextArea komunikaty;
+    private JTextField host;
+    private JPanel stol;
+    private JTextArea clientHand;
+    private JTextArea dealerHand;
+
     private JList<String> zalogowani;
     private DefaultListModel<String> listaZalogowanych;
     //Klient
@@ -28,18 +33,32 @@ public class CzatClient extends JFrame {
 
         instancjaKlienta = this;
 
-        setSize(600, 500);
+        setSize(800, 600);
+        setBackground(Color.green);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(new BorderLayout());
 
         panel = new JPanel(new FlowLayout());
-        komunikaty = new JTextArea();
-        komunikaty.setLineWrap(true);
-        komunikaty.setEditable(false);
 
-        wiadomosc = new JTextField();
+        stol = new JPanel();
+        stol.setSize(600, 600);
+
+        stol.repaint();
+        stol.revalidate();
+
+//        stoj.setPreferredSize(new Dimension(500, 500));
+        stol.setBackground(Color.green);
+
+        dobierz = new JButton("Dobierz");
+        stoj = new JButton("Stoj");
+
+        clientHand = new JTextArea(5,55);
+        dealerHand = new JTextArea(5,55);
+
+        dobierz.setVisible(false);
+        stoj.setVisible(false);
 
         host = new JTextField(nazwaSerwera, 12);
         polacz = new JButton("Połącz");
@@ -54,8 +73,6 @@ public class CzatClient extends JFrame {
 
         polacz.addActionListener(obsluga);
         rozlacz.addActionListener(obsluga);
-
-        wiadomosc.addKeyListener(obsluga);
 
         addWindowListener(new WindowAdapter() {
 
@@ -72,13 +89,35 @@ public class CzatClient extends JFrame {
         panel.add(rozlacz);
 
         add(panel, BorderLayout.NORTH);
-        add(new JScrollPane(komunikaty), BorderLayout.CENTER);
+
+        JScrollPane clientHandScroll = new JScrollPane(clientHand);
+        JScrollPane dealerHandScroll = new JScrollPane(dealerHand);
+        clientHandScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        dealerHandScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        stol.add(clientHandScroll, BorderLayout.CENTER);
+        stol.add(dealerHandScroll, BorderLayout.CENTER);
+
+        stol.add(dobierz, BorderLayout.SOUTH);
+        stol.add(stoj, BorderLayout.SOUTH);
+
+        stol.repaint();
+        stol.revalidate();
+
+        add(stol, BorderLayout.CENTER);
+
         add(new JScrollPane(zalogowani), BorderLayout.EAST);
-        add(wiadomosc, BorderLayout.SOUTH);
+
+        repaint();
+        revalidate();
 
         setVisible(true);
 
     }
+//    public void paint (Graphics g) {
+//        g.setColor(Color.green);
+//        g.fillRect(0,0,800,100);
+//    }
 
     private class ObslugaZdarzen extends KeyAdapter implements ActionListener {
 
@@ -90,6 +129,10 @@ public class CzatClient extends JFrame {
                 host.setEnabled(false);
                 watekKlienta = new Klient();
                 watekKlienta.start();
+
+                dobierz.setVisible(true);
+                stoj.setVisible(true);
+
             }
             if (e.getActionCommand().equals("Rozłącz")) {
                 listaZalogowanych.clear();
@@ -101,17 +144,9 @@ public class CzatClient extends JFrame {
                 rozlacz.setEnabled(false);
                 polacz.setEnabled(true);
                 host.setEnabled(true);
-            }
-        }
 
-        public void keyReleased(KeyEvent e) {
-            if (e.getKeyCode() == 10) {
-                try {
-                    serwer.wiadomosc(klient, wiadomosc.getText());
-                    wiadomosc.setText("");
-                } catch (Exception ex) {
-                    System.out.println("Błąd: " + ex);
-                }
+                dobierz.setVisible(false);
+                stoj.setVisible(false);
             }
         }
     }
@@ -134,8 +169,7 @@ public class CzatClient extends JFrame {
     }
 
     public void wyswietlKomunikat(String tekst) {
-        komunikaty.append(tekst + "\n");
-        komunikaty.setCaretPosition(komunikaty.getDocument().getLength());
+
     }
 
     public void odswiezListe(Vector<Client> lista) {
