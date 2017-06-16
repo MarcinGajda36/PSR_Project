@@ -18,7 +18,7 @@ public class Reka {
             ++asy;
         }
         if (punkty + karta.wartosc > 21 && asy > 0) {
-            punkty -= 10; //As w zasadach blackJacka moze byc 11 lub 1
+            punkty += karta.wartosc - 10; //As w zasadach blackJacka moze byc 11 lub 1
             --asy;
         } else {
             punkty += karta.wartosc;
