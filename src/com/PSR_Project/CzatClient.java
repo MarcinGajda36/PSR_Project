@@ -54,11 +54,11 @@ public class CzatClient extends JFrame {
         dobierz = new JButton("Dobierz");
         stoj = new JButton("Stoj");
 
-        clientHand = new JTextArea(5,55);
-        dealerHand = new JTextArea(5,55);
+        clientHand = new JTextArea(7,55);
+        dealerHand = new JTextArea(7,55);
 
-        dobierz.setVisible(false);
-        stoj.setVisible(false);
+        dobierz.setEnabled(false);
+        stoj.setEnabled(false);
 
         host = new JTextField(nazwaSerwera, 12);
         polacz = new JButton("Połącz");
@@ -90,6 +90,8 @@ public class CzatClient extends JFrame {
 
         add(panel, BorderLayout.NORTH);
 
+        clientHand.setLineWrap(true);
+        dealerHand.setLineWrap(true);
         JScrollPane clientHandScroll = new JScrollPane(clientHand);
         JScrollPane dealerHandScroll = new JScrollPane(dealerHand);
         clientHandScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -108,16 +110,14 @@ public class CzatClient extends JFrame {
 
         add(new JScrollPane(zalogowani), BorderLayout.EAST);
 
+        setResizable(false);
+
         repaint();
         revalidate();
 
         setVisible(true);
 
     }
-//    public void paint (Graphics g) {
-//        g.setColor(Color.green);
-//        g.fillRect(0,0,800,100);
-//    }
 
     private class ObslugaZdarzen extends KeyAdapter implements ActionListener {
 
@@ -130,8 +130,8 @@ public class CzatClient extends JFrame {
                 watekKlienta = new Klient();
                 watekKlienta.start();
 
-                dobierz.setVisible(true);
-                stoj.setVisible(true);
+                dobierz.setEnabled(true);
+                stoj.setEnabled(true);
 
             }
             if (e.getActionCommand().equals("Rozłącz")) {
@@ -145,8 +145,8 @@ public class CzatClient extends JFrame {
                 polacz.setEnabled(true);
                 host.setEnabled(true);
 
-                dobierz.setVisible(false);
-                stoj.setVisible(false);
+                dobierz.setEnabled(false);
+                stoj.setEnabled(false);
             }
         }
     }

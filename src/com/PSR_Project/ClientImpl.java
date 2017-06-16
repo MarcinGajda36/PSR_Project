@@ -1,8 +1,8 @@
 package com.PSR_Project;
 
-import java.rmi.*;
-import java.rmi.server.*;
-import java.util.*;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Vector;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
@@ -10,6 +10,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private CzatClient klient;
     private String nick;
+    private int stanKonta;
+    private Reka reka;
 
     public ClientImpl(CzatClient klient, String nick) throws RemoteException {
         this.klient = klient;
