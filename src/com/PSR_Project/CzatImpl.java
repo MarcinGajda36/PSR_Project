@@ -28,13 +28,13 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
         }
     }
 
-    public synchronized void wiadomosc(Client n, String s) throws RemoteException {
-
-        for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
-            Client klient = i.next();
-            klient.wiadomosc(n.pobierzNicka(), s);
-        }
-    }
+//    public synchronized void wiadomosc(Client n, String s) throws RemoteException {
+//
+//        for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
+//            Client klient = i.next();
+//            klient.odswiezPunktacje(n.pobierzNicka(), s);
+//        }
+//    }
 
     public synchronized void opusc(Client n) throws RemoteException {
 

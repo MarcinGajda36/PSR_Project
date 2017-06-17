@@ -2,6 +2,7 @@ package com.PSR_Project;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
@@ -28,10 +29,15 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
         list = lista;
     }
 
-    public void wiadomosc(String nick, String wiadomosc) throws RemoteException {
-        klient.wyswietlKomunikat("<" + nick + ">" + wiadomosc);
+    public void odswiezPunktacje(Vector<Client> list) throws RemoteException {
+        for (Iterator<Client> i = list.iterator(); i.hasNext();) {
+            Client klient = i.next();
+            klient.odswiezListe(list);
+        }
     }
-
+    public void odswiezListe (Vector<Client> list) throws RemoteException {
+        klient.odswiezListe(list);
+    }
     public void wiadomoscKonczaca(String nick, Vector<Client> lista) throws RemoteException {
         klient.wyswietlKomunikat("Czat opuścił/a: " + nick);
         klient.odswiezListe(lista);
@@ -44,9 +50,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     public void ustawNicka(String nick) throws RemoteException {
         this.nick = nick + "(" + punktacja + ")";
     }
-    public void dodajZwycieztwo(int z) {
+    public void dodajZwycieztwo(int z) throws RemoteException {
         punktacja = z;
-        klient.odswiezListe(list);
+//        klient.odswiezListe(list);
+        odswiezPunktacje(list);
     }
 }
 

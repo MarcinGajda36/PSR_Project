@@ -4,6 +4,7 @@ package com.PSR_Project;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Vector;
@@ -221,7 +222,11 @@ public class CzatClient extends JFrame {
         }
     }
     public void wygranaPartia () {
-        klient.dodajZwycieztwo(++liczbaZwycieztw);
+        try {
+            klient.dodajZwycieztwo(++liczbaZwycieztw);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private class Klient extends Thread {
