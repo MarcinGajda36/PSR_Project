@@ -18,6 +18,8 @@ public class CzatClient extends JFrame {
     private JPanel stol;
     private JTextArea clientHand;
     private JTextArea dealerHand;
+    private JLabel punktacjaClienta;
+    private JLabel punktacjaDealera;
     private JList<String> zalogowani;
     private DefaultListModel<String> listaZalogowanych;
     //Klient
@@ -37,6 +39,13 @@ public class CzatClient extends JFrame {
     public void setDealerHand(String newCard) {
         dealerHand.insert(newCard,0);
         dealerHand.setCaretPosition(0);
+    }
+    public void setPunktacjaClientaLabel (String punktacja) {
+        punktacjaClienta.setText(punktacja);
+    }
+    public void setPunktacjaDealeraLabel (String punktacja) {
+        punktacjaDealera.setText(punktacja);
+
     }
 
     public CzatClient() {
@@ -69,6 +78,9 @@ public class CzatClient extends JFrame {
 
         dobierz.setEnabled(false);
         stoj.setEnabled(false);
+
+        punktacjaClienta = new JLabel("Punktacja klienta");
+        punktacjaDealera = new JLabel("Punktacja Dealera");
 
         host = new JTextField(nazwaSerwera, 12);
         polacz = new JButton("Połącz");
@@ -107,11 +119,17 @@ public class CzatClient extends JFrame {
         clientHandScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         dealerHandScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        stol.add(punktacjaClienta);
         stol.add(clientHandScroll, BorderLayout.CENTER);
+
+        stol.add(punktacjaDealera);
         stol.add(dealerHandScroll, BorderLayout.CENTER);
 
         stol.add(dobierz, BorderLayout.SOUTH);
         stol.add(stoj, BorderLayout.SOUTH);
+
+
+
 
         stol.repaint();
         stol.revalidate();
