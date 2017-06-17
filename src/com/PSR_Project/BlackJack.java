@@ -29,7 +29,8 @@ public class BlackJack {
         });
 
     }
-    public void zacznijGre () {
+    public synchronized void zacznijGre () {
+//        rwl = new ReadWriteLock();
         graWToku = true;
         ++nrParti;
         czatClient.setClientHand("numer parti: " + nrParti + "\n");
@@ -43,10 +44,11 @@ public class BlackJack {
         czatClient.wlaczSterowanie();
 
         kolejnaKartaGracza();
-        kolejnaKartaGracza();
+        kolejnaKartaDealera();
 
+        kolejnaKartaGracza();
         kolejnaKartaDealera();
-        kolejnaKartaDealera();
+
 
 
     }
@@ -68,7 +70,7 @@ public class BlackJack {
         return dealer.pobierzPunkty().get();
     }
     public void endGame() {
-        if (graWToku == true) {
+        if (graWToku) {
             graWToku = false;
 
             int punktyDealera = dealer.pobierzPunkty().get();

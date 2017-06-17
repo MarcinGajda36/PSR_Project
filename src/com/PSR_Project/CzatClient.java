@@ -211,8 +211,8 @@ public class CzatClient extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     wlaczSterowanie();
 
-                    setDealerHand("\n\n\n");
-                    setClientHand("\n\n\n");
+                    setDealerHand("\n\n\n\n");
+                    setClientHand("\n\n\n\n");
 
                     blackJack.zacznijGre();
                 }
