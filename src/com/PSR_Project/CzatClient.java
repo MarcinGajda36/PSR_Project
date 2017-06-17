@@ -31,10 +31,12 @@ public class CzatClient extends JFrame {
 
     public void setClientHand(String newCard) {
         clientHand.insert(newCard, 0);
+        clientHand.setCaretPosition(0);
     }
 
     public void setDealerHand(String newCard) {
         dealerHand.insert(newCard,0);
+        dealerHand.setCaretPosition(0);
     }
 
     public CzatClient() {
@@ -170,6 +172,11 @@ public class CzatClient extends JFrame {
             } );
             stoj.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+
+                    while (blackJack.punktyDealera() < 17) {
+                        blackJack.kolejnaKartaDealera();
+                    }
+
                     blackJack.endGame();
                 }
             } );

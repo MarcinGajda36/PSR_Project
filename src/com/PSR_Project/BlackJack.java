@@ -14,17 +14,17 @@ public class BlackJack {
         dealer = new Reka();
         gracz = new Reka();
 
-//        gracz.pobierzPunkty().addListener((obs, old, newValue) -> {
-//            if (newValue.intValue() >= 21) {
-//                endGame();
-//            }
-//        });
-//
-//        dealer.pobierzPunkty().addListener((obs, old, newValue) -> {
-//            if (newValue.intValue() >= 21) {
-//                endGame();
-//            }
-//        });
+        gracz.pobierzPunkty().addListener((obs, old, newValue) -> {
+            if (newValue.intValue() >= 21) {
+                endGame();
+            }
+        });
+
+        dealer.pobierzPunkty().addListener((obs, old, newValue) -> {
+            if (newValue.intValue() >= 21) {
+                endGame();
+            }
+        });
 
     }
     public void zacznijGre () {
@@ -47,12 +47,14 @@ public class BlackJack {
     }
 
     public void kolejnaKartaGracza () {
+        System.out.println("kolejnaKartaGracza");
         Karta karta = talia.losujKarte();
         gracz.dobierzKarte(karta);
         czatClient.setClientHand(karta.toString()+"\n");
     }
 
     public void kolejnaKartaDealera () {
+        System.out.println("kolejnaKartaDealera");
         Karta karta = talia.losujKarte();
         dealer.dobierzKarte(karta);
         czatClient.setDealerHand(karta.toString()+"\n");
@@ -64,7 +66,9 @@ public class BlackJack {
         graWToku = false;
 
         int punktyDealera = dealer.pobierzPunkty().get();
+        System.out.println("punktyDealera: " + punktyDealera);
         int punktyGracza = gracz.pobierzPunkty().get();
+        System.out.println("punktyGracza: " + punktyGracza);
         String zwyciezca = String.format("Cos poszlo nie tak punkty dealera: %d , Gracza: %d", punktyDealera, punktyGracza);
 
         // the order of checking is important
