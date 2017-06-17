@@ -1,8 +1,9 @@
 package com.PSR_Project;
 
-import java.rmi.*;
-import java.rmi.server.*;
-import java.util.*;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.Iterator;
+import java.util.Vector;
 
 public class CzatImpl extends UnicastRemoteObject implements Czat {
 
@@ -23,7 +24,7 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
 
         for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
             Client klient = i.next();
-            klient.wiadomoscPowitalna(n.pobierzNicka(), klienci);
+            klient.bierzacaPunktacja(n.pobierzNicka(), klienci);
         }
     }
 

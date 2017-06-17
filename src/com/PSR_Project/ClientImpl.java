@@ -13,14 +13,19 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     private int stanKonta;
     private Reka reka;
 
-    public ClientImpl(CzatClient klient, String nick) throws RemoteException {
+    private int punktacja = 0;
+
+    private Vector<Client> list;
+
+    public ClientImpl(CzatClient klient, String nick, int punktacja) throws RemoteException {
         this.klient = klient;
         this.nick = nick;
+        this.punktacja = punktacja;
     }
 
-    public void wiadomoscPowitalna(String nick, Vector<Client> lista) throws RemoteException {
-        klient.wyswietlKomunikat("Do czatu dołączył/a: " + nick);
+    public void bierzacaPunktacja(String nick, Vector<Client> lista) throws RemoteException {
         klient.odswiezListe(lista);
+        list = lista;
     }
 
     public void wiadomosc(String nick, String wiadomosc) throws RemoteException {
@@ -33,11 +38,15 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     public String pobierzNicka() throws RemoteException {
-        return nick;
+        return nick + "(" + punktacja + ")";
     }
 
     public void ustawNicka(String nick) throws RemoteException {
-        this.nick = nick;
+        this.nick = nick + "(" + punktacja + ")";
+    }
+    public void dodajZwycieztwo(int z) {
+        punktacja = z;
+        klient.odswiezListe(list);
     }
 }
 

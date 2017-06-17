@@ -17,7 +17,7 @@ public class Talia {
                 talia[i++] = new Karta(kolor,ranga);
     }
 
-    public Karta dobierzKarte () {
+    public Karta losujKarte() {
         Karta karta = null;
         while (karta == null) {
             int losowyIdx = (int) (Math.random()*talia.length);

@@ -18,7 +18,6 @@ public class CzatClient extends JFrame {
     private JPanel stol;
     private JTextArea clientHand;
     private JTextArea dealerHand;
-
     private JList<String> zalogowani;
     private DefaultListModel<String> listaZalogowanych;
     //Klient
@@ -27,6 +26,16 @@ public class CzatClient extends JFrame {
     private CzatClient instancjaKlienta;
     private Czat serwer;
     private ClientImpl klient;
+    private BlackJack blackJack;
+    private int liczbaZwycieztw;
+
+    public void setClientHand(String newCard) {
+        clientHand.insert(newCard, 0);
+    }
+
+    public void setDealerHand(String newCard) {
+        dealerHand.insert(newCard,0);
+    }
 
     public CzatClient() {
         super("Klient");
@@ -48,7 +57,6 @@ public class CzatClient extends JFrame {
         stol.repaint();
         stol.revalidate();
 
-//        stoj.setPreferredSize(new Dimension(500, 500));
         stol.setBackground(Color.green);
 
         dobierz = new JButton("Dobierz");
@@ -117,7 +125,11 @@ public class CzatClient extends JFrame {
 
         setVisible(true);
 
+        liczbaZwycieztw = 0;
+
+        blackJack = new BlackJack(CzatClient.this);
     }
+
 
     private class ObslugaZdarzen extends KeyAdapter implements ActionListener {
 
@@ -132,7 +144,6 @@ public class CzatClient extends JFrame {
 
                 dobierz.setEnabled(true);
                 stoj.setEnabled(true);
-
             }
             if (e.getActionCommand().equals("Rozłącz")) {
                 listaZalogowanych.clear();
@@ -148,7 +159,24 @@ public class CzatClient extends JFrame {
                 dobierz.setEnabled(false);
                 stoj.setEnabled(false);
             }
+
+            dobierz.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (blackJack.graWToku() == true)
+                        blackJack.kolejnaKartaGracza();
+                    else
+                        dobierz.setEnabled(false);
+                }
+            } );
+            stoj.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    blackJack.endGame();
+                }
+            } );
         }
+    }
+    public void wygranaPartia () {
+        klient.dodajZwycieztwo(++liczbaZwycieztw);
     }
 
     private class Klient extends Thread {
@@ -159,8 +187,11 @@ public class CzatClient extends JFrame {
                 serwer = (Czat) rejestr.lookup("RMICzat");
                 wyswietlKomunikat("Połączyłem się z serwerem.");
                 String nick = JOptionPane.showInputDialog(null, "Podaj nick: ");
-                klient = new ClientImpl(instancjaKlienta, nick);
+                klient = new ClientImpl(instancjaKlienta, nick, liczbaZwycieztw);
                 serwer.dolacz(klient);
+
+                if (blackJack.graWToku() == false)
+                    blackJack.zacznijGre();
 
             } catch (Exception e) {
                 System.out.println("Błąd połączenia: " + e);
