@@ -12,7 +12,7 @@ public class CzatClient extends JFrame {
 
     //GUI
     private JButton polacz, rozlacz;
-    private JButton dobierz, stoj;
+    private JButton dobierz, stoj, nastepneRozdanie;
     private JPanel panel;
     private JTextField host;
     private JPanel stol;
@@ -72,6 +72,7 @@ public class CzatClient extends JFrame {
 
         dobierz = new JButton("Dobierz");
         stoj = new JButton("Stoj");
+        nastepneRozdanie = new JButton("Nastepne rozdanie");
 
         clientHand = new JTextArea(7,55);
         dealerHand = new JTextArea(7,55);
@@ -127,9 +128,7 @@ public class CzatClient extends JFrame {
 
         stol.add(dobierz, BorderLayout.SOUTH);
         stol.add(stoj, BorderLayout.SOUTH);
-
-
-
+        stol.add(nastepneRozdanie, BorderLayout.SOUTH);
 
         stol.repaint();
         stol.revalidate();
@@ -147,9 +146,19 @@ public class CzatClient extends JFrame {
 
         liczbaZwycieztw = 0;
 
+        nastepneRozdanie.setEnabled(false);
         blackJack = new BlackJack(CzatClient.this);
     }
-
+    public void wylaczSterowanie () {
+        dobierz.setEnabled(false);
+        stoj.setEnabled(false);
+        nastepneRozdanie.setEnabled(true);
+    }
+    public void wlaczSterowanie () {
+        dobierz.setEnabled(true);
+        stoj.setEnabled(true);
+        nastepneRozdanie.setEnabled(false);
+    }
 
     private class ObslugaZdarzen extends KeyAdapter implements ActionListener {
 
@@ -198,6 +207,17 @@ public class CzatClient extends JFrame {
                     blackJack.endGame();
                 }
             } );
+            nastepneRozdanie.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    wlaczSterowanie();
+
+                    setDealerHand("\n\n\n");
+                    setClientHand("\n\n\n");
+
+                    blackJack.zacznijGre();
+                }
+            });
         }
     }
     public void wygranaPartia () {

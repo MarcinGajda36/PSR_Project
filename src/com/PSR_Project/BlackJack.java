@@ -87,8 +87,7 @@ public class BlackJack {
             czatClient.setDealerHand("koniec rundy: "+ zwyciezca + " wygrywa!" + "\n");
             czatClient.setClientHand("koniec rundy: "+ zwyciezca + " wygrywa!" + "\n");
 
-            czatClient.setDealerHand("\n\n");
-            czatClient.setClientHand("\n\n");
+            czatClient.wylaczSterowanie();
         }
     }
 
