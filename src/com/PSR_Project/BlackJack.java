@@ -11,15 +11,15 @@ public class BlackJack {
         koniecGry = false;
 //        message.setText("");
 //
-//        deck.refill();
-//
-//        dealer.reset();
-//        player.reset();
-//
-//        dealer.takeCard(deck.drawCard());
-//        dealer.takeCard(deck.drawCard());
-//        player.takeCard(deck.drawCard());
-//        player.takeCard(deck.drawCard());
+        talia.przetasuj();
+
+        dealer.resetuj();
+        gracz.resetuj();
+
+        dealer.dobierzKarte(talia.dobierzKarte());
+        dealer.dobierzKarte(talia.dobierzKarte());
+        gracz.dobierzKarte(talia.dobierzKarte());
+        gracz.dobierzKarte(talia.dobierzKarte());
         return this;
     }
 
