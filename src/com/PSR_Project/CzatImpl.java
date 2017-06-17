@@ -14,6 +14,11 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
         this.serwer = serwer;
     }
 
+    @Override
+    public void wiadomosc(String nick, String w) throws RemoteException {
+        serwer.wyswietlKomunikat("Klient: " + nick + " " + w);
+    }
+
     public synchronized void dolacz(Client n) throws RemoteException {
 
         klienci.add(n);
@@ -21,20 +26,18 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
 
         serwer.wyswietlKomunikat("Do czatu dołączył/a: " + n.pobierzNicka());
 
-
         for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
             Client klient = i.next();
             klient.bierzacaPunktacja(n.pobierzNicka(), klienci);
         }
     }
-
-//    public synchronized void wiadomosc(Client n, String s) throws RemoteException {
-//
-//        for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
-//            Client klient = i.next();
-//            klient.odswiezPunktacje(n.pobierzNicka(), s);
-//        }
-//    }
+    public void odswiezPunktacje(Vector<Client> list) throws RemoteException {
+        serwer.odswiezListe(list);
+        for (Iterator<Client> i = list.iterator(); i.hasNext();) {
+            Client klient = i.next();
+            klient.odswiezListe(list);
+        }
+    }
 
     public synchronized void opusc(Client n) throws RemoteException {
 
@@ -44,7 +47,7 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
         serwer.wyswietlKomunikat("Czat opuścił/a: " + n.pobierzNicka());
 
         for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
-            Client klient = (Client) i.next();
+            Client klient = i.next();
             klient.wiadomoscKonczaca(n.pobierzNicka(), klienci);
         }
     }

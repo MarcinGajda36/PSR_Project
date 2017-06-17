@@ -2,13 +2,16 @@ package com.PSR_Project;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Vector;
 
 public interface Czat extends Remote {
 
-    public void dolacz(Client k) throws RemoteException;
+    void dolacz(Client k) throws RemoteException;
 
-//    public void wiadomosc(Client k, String s) throws RemoteException;
+    void odswiezPunktacje(Vector<Client> list) throws RemoteException;
 
-    public void opusc(Client k) throws RemoteException;
+    void wiadomosc (String nick, String w) throws RemoteException;
+
+    void opusc(Client k) throws RemoteException;
 
 }

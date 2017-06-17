@@ -172,8 +172,6 @@ public class CzatClient extends JFrame {
                 watekKlienta = new Klient();
                 watekKlienta.start();
 
-                dobierz.setEnabled(true);
-                stoj.setEnabled(true);
             }
             if (e.getActionCommand().equals("Rozłącz")) {
                 listaZalogowanych.clear();
@@ -192,7 +190,7 @@ public class CzatClient extends JFrame {
 
             dobierz.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (blackJack.graWToku() == true)
+                    if (blackJack.graWToku())
                         blackJack.kolejnaKartaGracza();
                     else
                         dobierz.setEnabled(false);
@@ -237,14 +235,16 @@ public class CzatClient extends JFrame {
                 serwer = (Czat) rejestr.lookup("RMICzat");
                 wyswietlKomunikat("Połączyłem się z serwerem.");
                 String nick = JOptionPane.showInputDialog(null, "Podaj nick: ");
-                klient = new ClientImpl(instancjaKlienta, nick, liczbaZwycieztw);
+                klient = new ClientImpl(serwer, instancjaKlienta, nick, liczbaZwycieztw);
                 serwer.dolacz(klient);
 
-                if (blackJack.graWToku() == false)
+                if (!blackJack.graWToku())
                     blackJack.zacznijGre();
 
             } catch (Exception e) {
                 System.out.println("Błąd połączenia: " + e);
+                wylaczSterowanie();
+                nastepneRozdanie.setEnabled(false);
             }
         }
     }
@@ -263,6 +263,8 @@ public class CzatClient extends JFrame {
                 System.out.println(n.pobierzNicka());
             } catch (Exception e) {
                 System.out.println("Błąd: " + e);
+                wylaczSterowanie();
+                nastepneRozdanie.setEnabled(false);
             }
         }
     }

@@ -2,7 +2,6 @@ package com.PSR_Project;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Iterator;
 import java.util.Vector;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
@@ -11,14 +10,14 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private CzatClient klient;
     private String nick;
-    private int stanKonta;
-    private Reka reka;
+    private Czat server;
 
     private int punktacja = 0;
 
     private Vector<Client> list;
 
-    public ClientImpl(CzatClient klient, String nick, int punktacja) throws RemoteException {
+    public ClientImpl(Czat server ,CzatClient klient, String nick, int punktacja) throws RemoteException {
+        this.server = server;
         this.klient = klient;
         this.nick = nick;
         this.punktacja = punktacja;
@@ -30,10 +29,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
 
     public void odswiezPunktacje(Vector<Client> list) throws RemoteException {
-        for (Iterator<Client> i = list.iterator(); i.hasNext();) {
-            Client klient = i.next();
-            klient.odswiezListe(list);
-        }
+        server.odswiezPunktacje(list);
     }
     public void odswiezListe (Vector<Client> list) throws RemoteException {
         klient.odswiezListe(list);
@@ -52,8 +48,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     }
     public void dodajZwycieztwo(int z) throws RemoteException {
         punktacja = z;
-//        klient.odswiezListe(list);
         odswiezPunktacje(list);
+        server.wiadomosc(pobierzNicka(), "Wygrał rozdanie");
     }
 }
 

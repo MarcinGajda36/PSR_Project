@@ -40,11 +40,14 @@ public class BlackJack {
         dealer.resetuj();
         gracz.resetuj();
 
+        czatClient.wlaczSterowanie();
+
         kolejnaKartaGracza();
         kolejnaKartaGracza();
 
         kolejnaKartaDealera();
         kolejnaKartaDealera();
+
 
     }
 
