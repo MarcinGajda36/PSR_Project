@@ -83,7 +83,6 @@ public class BlackJack {
         return dealer.pobierzPunkty().get();
     }
     public void endGame() {
-        if (graWToku && dealer.liczbaKart() > 1) {
             graWToku = false;
 
             int punktyDealera = dealer.pobierzPunkty().get();
@@ -103,7 +102,7 @@ public class BlackJack {
             graClient.setClientHand("koniec rundy: "+ zwyciezca + " wygrywa!" + "\n");
 
             graClient.wylaczSterowanie();
-        }
+
     }
 
     public boolean graWToku() {
