@@ -4,7 +4,10 @@ package com.PSR_Project;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -64,9 +67,9 @@ public class CzatClient extends JFrame {
         setSize(800, 700);
         setBackground(Color.green);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
 
         panel = new JPanel(new FlowLayout());
 
@@ -76,7 +79,7 @@ public class CzatClient extends JFrame {
         stol.repaint();
         stol.revalidate();
 
-        stol.setBackground(Color.green);
+        stol.setBackground(new Color(18,175,18));
 
         sterowanieRozgrywka = new JPanel(new FlowLayout());
 
@@ -84,19 +87,20 @@ public class CzatClient extends JFrame {
         stoj = new JButton("Stoj");
         nastepneRozdanie = new JButton("Nastepne rozdanie");
 
-        clientHand = new JTextArea(7,55);
-        dealerHand = new JTextArea(7,55);
-
         dobierz.setEnabled(false);
         stoj.setEnabled(false);
 
         punktacjaClienta = new JLabel("Punktacja klienta");
+        punktacjaClienta.setBounds(296, 256, 150, 20);
         punktacjaDealera = new JLabel("Punktacja Dealera");
+        punktacjaDealera.setBounds(296, 130, 150, 20);
 
         kartyGracza = new JPanel(new FlowLayout());
+        kartyGracza.setBounds(10, 382, 642, 110);
         kartyGracza.setBackground(Color.green);
 
         kartyDealera = new JPanel(new FlowLayout());
+        kartyDealera.setBounds(10, 19, 642, 110);
         kartyDealera.setBackground(Color.green);
 
         host = new JTextField(nazwaSerwera, 12);
@@ -108,13 +112,7 @@ public class CzatClient extends JFrame {
         zalogowani = new JList<>(listaZalogowanych);
         zalogowani.setFixedCellWidth(120);
 
-        ObslugaZdarzen obsluga = new ObslugaZdarzen();
-
-        polacz.addActionListener(obsluga);
-        rozlacz.addActionListener(obsluga);
-
         addWindowListener(new WindowAdapter() {
-
             public void windowClosing(WindowEvent e) {
                 rozlacz.doClick();
                 setVisible(false);
@@ -127,37 +125,56 @@ public class CzatClient extends JFrame {
         panel.add(polacz);
         panel.add(rozlacz);
 
-        add(panel, BorderLayout.NORTH);
+        clientHand = new JTextArea(7,55);
+        dealerHand = new JTextArea(7,55);
 
-        clientHand.setLineWrap(true);
-        dealerHand.setLineWrap(true);
+        getContentPane().add(panel, BorderLayout.NORTH);
         JScrollPane rekaKlienta = new JScrollPane(clientHand);
+        rekaKlienta.setBounds(191, 281, 281, 90);
         JScrollPane rekaDealera = new JScrollPane(dealerHand);
+        rekaDealera.setBounds(191, 155, 281, 90);
         rekaKlienta.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         rekaDealera.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        stol.setLayout(null);
 
-        stol.add(kartyDealera, BorderLayout.NORTH);
+        stol.add(kartyDealera);
+        stol.add(rekaDealera);
 
-        stol.add(rekaDealera, BorderLayout.CENTER);
         stol.add(punktacjaDealera);
-
         stol.add(punktacjaClienta);
-        stol.add(rekaKlienta, BorderLayout.CENTER);
+        stol.add(rekaKlienta);
 
-        stol.add(kartyGracza, BorderLayout.SOUTH); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-
+        stol.add(kartyGracza);
 
         sterowanieRozgrywka.add(dobierz, BorderLayout.SOUTH);
         sterowanieRozgrywka.add(stoj, BorderLayout.SOUTH);
         sterowanieRozgrywka.add(nastepneRozdanie, BorderLayout.SOUTH);
 
-        add(sterowanieRozgrywka, BorderLayout.SOUTH);
+        getContentPane().add(sterowanieRozgrywka, BorderLayout.SOUTH);
+        getContentPane().add(stol, BorderLayout.CENTER);
 
-        add(stol, BorderLayout.CENTER);
+        JLabel blackJokerLabel = new JLabel();
+        JLabel redJokerLabel = new JLabel();
+        BufferedImage blackJoker = null;
+        BufferedImage redJoker = null;
+        try {
+            blackJoker = ImageIO.read(new File("KartyPNG\\black_joker.png"));
+            redJoker = ImageIO.read(new File("KartyPNG\\red_joker.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        blackJokerLabel.setIcon(new ImageIcon(blackJoker.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
+        blackJokerLabel.setBounds(53, 198, 71, 108);
+        stol.add(blackJokerLabel);
 
-        add(new JScrollPane(zalogowani), BorderLayout.EAST);
 
-        setResizable(true);
+        redJokerLabel.setIcon(new ImageIcon(redJoker.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
+        redJokerLabel.setBounds(543, 198, 71, 108);
+        stol.add(redJokerLabel);
+
+        getContentPane().add(new JScrollPane(zalogowani), BorderLayout.EAST);
+
+        setResizable(false);
 
         stol.repaint();
         stol.revalidate();
@@ -171,7 +188,65 @@ public class CzatClient extends JFrame {
 
         nastepneRozdanie.setEnabled(false);
         blackJack = new BlackJack(CzatClient.this);
+
+        // Listeners
+        polacz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                polacz.setEnabled(false);
+                rozlacz.setEnabled(true);
+                host.setEnabled(false);
+                watekKlienta = new Klient();
+                watekKlienta.start();
+            }
+        });
+        rozlacz.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listaZalogowanych.clear();
+                try {
+                    serwer.opusc(klient);
+                } catch (Exception ex) {
+                    System.out.println("Błąd: " + ex);
+                }
+                rozlacz.setEnabled(false);
+                polacz.setEnabled(true);
+                host.setEnabled(true);
+                dobierz.setEnabled(false);
+                stoj.setEnabled(false);
+            }
+        });
+        dobierz.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (blackJack.graWToku())
+                    blackJack.kolejnaKartaGracza();
+                else
+                    dobierz.setEnabled(false);
+            }
+        } );
+        stoj.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                while (blackJack.punktyDealera() < 17) {
+                    blackJack.kolejnaKartaDealera();
+                }
+
+                blackJack.endGame();
+            }
+        } );
+        nastepneRozdanie.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                wlaczSterowanie();
+
+                setDealerHand("\n\n\n\n");
+                setClientHand("\n\n\n\n");
+
+                blackJack.zacznijGre();
+            }
+        });
     }
+
     public void wylaczSterowanie () {
         dobierz.setEnabled(false);
         stoj.setEnabled(false);
@@ -188,7 +263,7 @@ public class CzatClient extends JFrame {
         revalidate();
         repaint();
     }
-    public void dodajKarteGracz(File file, int x, int y) {
+    public void dodajKarteGracz(File file) {
         BufferedImage kartaPNG = null;
         try {
             kartaPNG = ImageIO.read(file);
@@ -196,14 +271,14 @@ public class CzatClient extends JFrame {
             e.printStackTrace();
         }
         JLabel kartaLABEL = new JLabel(new ImageIcon(kartaPNG.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
-        kartaLABEL.setBounds(x,y,70,100);
+        kartaLABEL.setBounds(0,0,70,100);
 
         kartyGracza.add(kartaLABEL);
 
         revalidate();
         repaint();
     }
-    public void dodajKarteDealera(File file, int x, int y) {
+    public void dodajKarteDealera(File file) {
         BufferedImage kartaPNG = null;
         try {
             kartaPNG = ImageIO.read(file);
@@ -211,71 +286,12 @@ public class CzatClient extends JFrame {
             e.printStackTrace();
         }
         JLabel kartaLABEL = new JLabel(new ImageIcon(kartaPNG.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
-        kartaLABEL.setBounds(x,y,70,100);
+        kartaLABEL.setBounds(0,0,70,100);
 
         kartyDealera.add(kartaLABEL);
 
         revalidate();
         repaint();
-    }
-
-    private class ObslugaZdarzen extends KeyAdapter implements ActionListener {
-
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("Połącz")) {
-                wyswietlKomunikat("Łączę z: " + nazwaSerwera + "...");
-                polacz.setEnabled(false);
-                rozlacz.setEnabled(true);
-                host.setEnabled(false);
-                watekKlienta = new Klient();
-                watekKlienta.start();
-
-            }
-            if (e.getActionCommand().equals("Rozłącz")) {
-                listaZalogowanych.clear();
-                try {
-                    serwer.opusc(klient);
-                } catch (Exception ex) {
-                    System.out.println("Błąd: " + ex);
-                }
-                rozlacz.setEnabled(false);
-                polacz.setEnabled(true);
-                host.setEnabled(true);
-
-                dobierz.setEnabled(false);
-                stoj.setEnabled(false);
-            }
-
-            dobierz.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    if (blackJack.graWToku())
-                        blackJack.kolejnaKartaGracza();
-                    else
-                        dobierz.setEnabled(false);
-                }
-            } );
-            stoj.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-
-                    while (blackJack.punktyDealera() < 17) {
-                        blackJack.kolejnaKartaDealera();
-                    }
-
-                    blackJack.endGame();
-                }
-            } );
-            nastepneRozdanie.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    wlaczSterowanie();
-
-                    setDealerHand("\n\n\n\n");
-                    setClientHand("\n\n\n\n");
-
-                    blackJack.zacznijGre();
-                }
-            });
-        }
     }
     public void wygranaPartia () {
         try {
@@ -291,13 +307,16 @@ public class CzatClient extends JFrame {
             try {
                 Registry rejestr = LocateRegistry.getRegistry(host.getText());
                 serwer = (Czat) rejestr.lookup("RMICzat");
-                wyswietlKomunikat("Połączyłem się z serwerem.");
-                String nick = JOptionPane.showInputDialog(null, "Podaj nick: ");
+                String nick = "";
+
+                while (nick.isEmpty() || nick.length() < 3 || nick.length() > 9) {
+                    nick = JOptionPane.showInputDialog(null, "Podaj nick (3 do 9 znakow) : ").trim();
+                }
+
                 klient = new ClientImpl(serwer, instancjaKlienta, nick, liczbaZwycieztw);
                 serwer.dolacz(klient);
 
-                if (!blackJack.graWToku())
-                    blackJack.zacznijGre();
+                blackJack.zacznijGre();
 
             } catch (Exception e) {
                 System.out.println("Błąd połączenia: " + e);
@@ -305,10 +324,6 @@ public class CzatClient extends JFrame {
                 nastepneRozdanie.setEnabled(false);
             }
         }
-    }
-
-    public void wyswietlKomunikat(String tekst) {
-
     }
 
     public void odswiezListe(Vector<Client> lista) {

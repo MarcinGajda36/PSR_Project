@@ -45,10 +45,5 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
         serwer.odswiezListe(klienci);
 
         serwer.wyswietlKomunikat("Czat opuścił/a: " + n.pobierzNicka());
-
-        for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
-            Client klient = i.next();
-            klient.wiadomoscKonczaca(n.pobierzNicka(), klienci);
-        }
     }
 }

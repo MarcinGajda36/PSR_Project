@@ -9,10 +9,7 @@ public class BlackJack {
     private Reka gracz, dealer;
     private int nrParti = 0;
 
-    private int koordynatyKartyX;
-    private int koordynatyKartyY;
-
-    private File path;
+    private final File PATH = new File("KartyPNG\\");
     private File[] pngTalia;
 
     private boolean graWToku = false;
@@ -22,11 +19,7 @@ public class BlackJack {
         dealer = new Reka();
         gracz = new Reka();
 
-        koordynatyKartyX = 10;
-        koordynatyKartyY = 400;
-
-        path = new File("KartyPNG\\");
-        pngTalia = path.listFiles();
+        pngTalia = PATH.listFiles();
 
         gracz.pobierzPunkty().addListener((obs, old, newValue) -> {
             czatClient.setPunktacjaClientaLabel("Punktacja Klienta: " + newValue);
@@ -45,7 +38,6 @@ public class BlackJack {
     }
     public synchronized void zacznijGre () {
         czatClient.noweRozdanie();
-        koordynatyKartyX = 10;
 
         graWToku = true;
         ++nrParti;
@@ -68,29 +60,24 @@ public class BlackJack {
     }
 
     public void kolejnaKartaGracza () {
-        System.out.println("kolejnaKartaGracza");
         Karta karta = talia.losujKarte();
         czatClient.setClientHand(karta.toString()+"\n");
         gracz.dobierzKarte(karta);
 
         for (int i = 0; i < pngTalia.length; i++)
             if (pngTalia[i].toString().contains(karta.toString())) {
-                czatClient.dodajKarteGracz(pngTalia[i], koordynatyKartyX, koordynatyKartyY);
-                koordynatyKartyX += 50;
+                czatClient.dodajKarteGracz(pngTalia[i]);
             }
     }
-
     public void kolejnaKartaDealera () {
-        System.out.println("kolejnaKartaDealera");
         Karta karta = talia.losujKarte();
         czatClient.setDealerHand(karta.toString()+"\n");
         dealer.dobierzKarte(karta);
 
         for (int i = 0; i < pngTalia.length; i++)
             if (pngTalia[i].toString().contains(karta.toString())) {
-                czatClient.dodajKarteDealera(pngTalia[i], koordynatyKartyX, koordynatyKartyY);
+                czatClient.dodajKarteDealera(pngTalia[i]);
             }
-
     }
     public int punktyDealera () {
         return dealer.pobierzPunkty().get();
