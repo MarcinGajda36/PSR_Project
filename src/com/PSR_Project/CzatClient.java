@@ -18,6 +18,7 @@ public class CzatClient extends JFrame {
     //GUI
     private JButton polacz, rozlacz;
     private JButton dobierz, stoj, nastepneRozdanie;
+    private JPanel sterowanieRozgrywka;
     private JPanel panel;
     private JTextField host;
     private JPanel stol;
@@ -28,6 +29,7 @@ public class CzatClient extends JFrame {
     private JList<String> zalogowani;
     private DefaultListModel<String> listaZalogowanych;
     private JPanel kartyGracza;
+    private JPanel kartyDealera;
     //Klient
     private String nazwaSerwera = "localhost";
     private Klient watekKlienta;
@@ -59,7 +61,7 @@ public class CzatClient extends JFrame {
 
         instancjaKlienta = this;
 
-        setSize(800, 600);
+        setSize(800, 700);
         setBackground(Color.green);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,6 +78,8 @@ public class CzatClient extends JFrame {
 
         stol.setBackground(Color.green);
 
+        sterowanieRozgrywka = new JPanel(new FlowLayout());
+
         dobierz = new JButton("Dobierz");
         stoj = new JButton("Stoj");
         nastepneRozdanie = new JButton("Nastepne rozdanie");
@@ -88,6 +92,12 @@ public class CzatClient extends JFrame {
 
         punktacjaClienta = new JLabel("Punktacja klienta");
         punktacjaDealera = new JLabel("Punktacja Dealera");
+
+        kartyGracza = new JPanel(new FlowLayout());
+        kartyGracza.setBackground(Color.green);
+
+        kartyDealera = new JPanel(new FlowLayout());
+        kartyDealera.setBackground(Color.green);
 
         host = new JTextField(nazwaSerwera, 12);
         polacz = new JButton("Połącz");
@@ -121,33 +131,36 @@ public class CzatClient extends JFrame {
 
         clientHand.setLineWrap(true);
         dealerHand.setLineWrap(true);
-        JScrollPane clientHandScroll = new JScrollPane(clientHand);
-        JScrollPane dealerHandScroll = new JScrollPane(dealerHand);
-        clientHandScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        dealerHandScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane rekaKlienta = new JScrollPane(clientHand);
+        JScrollPane rekaDealera = new JScrollPane(dealerHand);
+        rekaKlienta.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        rekaDealera.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        stol.add(kartyDealera, BorderLayout.NORTH);
+
+        stol.add(rekaDealera, BorderLayout.CENTER);
+        stol.add(punktacjaDealera);
 
         stol.add(punktacjaClienta);
-        stol.add(clientHandScroll, BorderLayout.CENTER);
+        stol.add(rekaKlienta, BorderLayout.CENTER);
 
-        stol.add(punktacjaDealera);
-        stol.add(dealerHandScroll, BorderLayout.CENTER);
+        stol.add(kartyGracza, BorderLayout.SOUTH); //WWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 
-        stol.add(dobierz, BorderLayout.SOUTH);
-        stol.add(stoj, BorderLayout.SOUTH);
-        stol.add(nastepneRozdanie, BorderLayout.SOUTH);
 
-        stol.repaint();
-        stol.revalidate();
+        sterowanieRozgrywka.add(dobierz, BorderLayout.SOUTH);
+        sterowanieRozgrywka.add(stoj, BorderLayout.SOUTH);
+        sterowanieRozgrywka.add(nastepneRozdanie, BorderLayout.SOUTH);
+
+        add(sterowanieRozgrywka, BorderLayout.SOUTH);
 
         add(stol, BorderLayout.CENTER);
 
         add(new JScrollPane(zalogowani), BorderLayout.EAST);
 
-        setResizable(false);
+        setResizable(true);
 
-        kartyGracza = new JPanel(new FlowLayout());
-        kartyGracza.setBackground(Color.green);
-        add(kartyGracza, BorderLayout.SOUTH);
+        stol.repaint();
+        stol.revalidate();
 
         repaint();
         revalidate();
@@ -171,20 +184,36 @@ public class CzatClient extends JFrame {
     }
     public void noweRozdanie () {
         kartyGracza.removeAll();
+        kartyDealera.removeAll();
         revalidate();
         repaint();
     }
-    public void dodajKarte (File file, int x, int y) {
+    public void dodajKarteGracz(File file, int x, int y) {
         BufferedImage kartaPNG = null;
         try {
             kartaPNG = ImageIO.read(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JLabel kartaLABEL = new JLabel(new ImageIcon(kartaPNG.getScaledInstance(70, 100, Image.SCALE_FAST)));
+        JLabel kartaLABEL = new JLabel(new ImageIcon(kartaPNG.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
         kartaLABEL.setBounds(x,y,70,100);
 
         kartyGracza.add(kartaLABEL);
+
+        revalidate();
+        repaint();
+    }
+    public void dodajKarteDealera(File file, int x, int y) {
+        BufferedImage kartaPNG = null;
+        try {
+            kartaPNG = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel kartaLABEL = new JLabel(new ImageIcon(kartaPNG.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
+        kartaLABEL.setBounds(x,y,70,100);
+
+        kartyDealera.add(kartaLABEL);
 
         revalidate();
         repaint();

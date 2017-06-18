@@ -12,7 +12,7 @@ public class BlackJack {
     private int koordynatyKartyX;
     private int koordynatyKartyY;
 
-    File path;
+    private File path;
     private File[] pngTalia;
 
     private boolean graWToku = false;
@@ -75,11 +75,9 @@ public class BlackJack {
 
         for (int i = 0; i < pngTalia.length; i++)
             if (pngTalia[i].toString().contains(karta.toString())) {
-                czatClient.dodajKarte(pngTalia[i], koordynatyKartyX, koordynatyKartyY);
+                czatClient.dodajKarteGracz(pngTalia[i], koordynatyKartyX, koordynatyKartyY);
                 koordynatyKartyX += 50;
             }
-
-        koordynatyKartyX += 75;
     }
 
     public void kolejnaKartaDealera () {
@@ -87,6 +85,12 @@ public class BlackJack {
         Karta karta = talia.losujKarte();
         czatClient.setDealerHand(karta.toString()+"\n");
         dealer.dobierzKarte(karta);
+
+        for (int i = 0; i < pngTalia.length; i++)
+            if (pngTalia[i].toString().contains(karta.toString())) {
+                czatClient.dodajKarteDealera(pngTalia[i], koordynatyKartyX, koordynatyKartyY);
+            }
+
     }
     public int punktyDealera () {
         return dealer.pobierzPunkty().get();
@@ -96,12 +100,9 @@ public class BlackJack {
             graWToku = false;
 
             int punktyDealera = dealer.pobierzPunkty().get();
-            System.out.println("punktyDealera: " + punktyDealera);
             int punktyGracza = gracz.pobierzPunkty().get();
-            System.out.println("punktyGracza: " + punktyGracza);
             String zwyciezca = String.format("Cos poszlo nie tak punkty dealera: %d , Gracza: %d", punktyDealera, punktyGracza);
 
-            // the order of checking is important
             if (punktyDealera == 21 || punktyGracza > 21 || punktyDealera == punktyGracza
                     || (punktyDealera < 21 && punktyDealera > punktyGracza)) {
                 zwyciezca = "Kasyno";

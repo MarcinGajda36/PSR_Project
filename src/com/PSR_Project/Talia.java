@@ -6,7 +6,6 @@ import com.PSR_Project.Karta.Ranga;
 public class Talia {
 
     private Karta[] talia = new Karta[52];
-//    private File[] pngTalia;
 
     public Talia () {
         przetasuj();
@@ -17,10 +16,6 @@ public class Talia {
             for (Ranga ranga : Ranga.values())
                 talia[i++] = new Karta(kolor,ranga);
     }
-//    public final void przetasuj () {
-//        File path = new File("PSR_Project\\KartyPNG");
-//        pngTalia = path.listFiles();
-//    }
 
     public Karta losujKarte() {
         Karta karta = null;
@@ -31,14 +26,5 @@ public class Talia {
         }
         return karta;
     }
-//    public File losujKarte () {
-//        File karta = null;
-//        while (karta == null) {
-//            int losowyIdx = (int) (Math.random()*pngTalia.length);
-//            karta = pngTalia[losowyIdx];
-//            pngTalia[losowyIdx] = null;
-//        }
-//        return karta;
-//    }
 
 }

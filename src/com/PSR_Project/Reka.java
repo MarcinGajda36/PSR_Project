@@ -24,7 +24,7 @@ public class Reka {
         }
 
         if (punkty.get() + karta.wartosc > 21 && asy > 0) {
-            punkty.set(punkty.get() + karta.wartosc - 10);    //then count ace as '1' not '11'
+            punkty.set(punkty.get() + karta.wartosc - 10);
             asy--;
         }
         else {
