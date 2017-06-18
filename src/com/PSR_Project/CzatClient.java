@@ -1,9 +1,13 @@
 package com.PSR_Project;
 
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -23,6 +27,7 @@ public class CzatClient extends JFrame {
     private JLabel punktacjaDealera;
     private JList<String> zalogowani;
     private DefaultListModel<String> listaZalogowanych;
+    private JPanel kartyGracza;
     //Klient
     private String nazwaSerwera = "localhost";
     private Klient watekKlienta;
@@ -140,6 +145,10 @@ public class CzatClient extends JFrame {
 
         setResizable(false);
 
+        kartyGracza = new JPanel(new FlowLayout());
+        kartyGracza.setBackground(Color.green);
+        add(kartyGracza, BorderLayout.SOUTH);
+
         repaint();
         revalidate();
 
@@ -159,6 +168,26 @@ public class CzatClient extends JFrame {
         dobierz.setEnabled(true);
         stoj.setEnabled(true);
         nastepneRozdanie.setEnabled(false);
+    }
+    public void noweRozdanie () {
+        kartyGracza.removeAll();
+        revalidate();
+        repaint();
+    }
+    public void dodajKarte (File file, int x, int y) {
+        BufferedImage kartaPNG = null;
+        try {
+            kartaPNG = ImageIO.read(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JLabel kartaLABEL = new JLabel(new ImageIcon(kartaPNG.getScaledInstance(70, 100, Image.SCALE_FAST)));
+        kartaLABEL.setBounds(x,y,70,100);
+
+        kartyGracza.add(kartaLABEL);
+
+        revalidate();
+        repaint();
     }
 
     private class ObslugaZdarzen extends KeyAdapter implements ActionListener {

@@ -7,7 +7,7 @@ public class Karta {
     };
 
     enum Ranga {
-        Dwujka(2), Trojka(3), Czworka(4), Piatka(5), Szostka(6), Siodemka(7), Osemka(8), Dziewiatka(9), Dziesiatka(10),
+        Dwojka(2), Trojka(3), Czworka(4), Piatka(5), Szostka(6), Siodemka(7), Osemka(8), Dziewiatka(9), Dziesiatka(10),
         Walet(10), Dama(10), Krol(10), As(11);
 
         final int wartosc;

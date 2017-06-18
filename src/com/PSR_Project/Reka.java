@@ -39,5 +39,8 @@ public class Reka {
     public SimpleIntegerProperty  pobierzPunkty () {
         return punkty;
     }
+    public int liczbaKart () {
+        return karty.size();
+    }
 
 }

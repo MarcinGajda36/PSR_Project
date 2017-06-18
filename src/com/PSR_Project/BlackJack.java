@@ -1,5 +1,7 @@
 package com.PSR_Project;
 
+import java.io.File;
+
 public class BlackJack {
 
     private CzatClient czatClient;
@@ -7,12 +9,24 @@ public class BlackJack {
     private Reka gracz, dealer;
     private int nrParti = 0;
 
+    private int koordynatyKartyX;
+    private int koordynatyKartyY;
+
+    File path;
+    private File[] pngTalia;
+
     private boolean graWToku = false;
 
     public BlackJack(CzatClient czatClient) {
         this.czatClient = czatClient;
         dealer = new Reka();
         gracz = new Reka();
+
+        koordynatyKartyX = 10;
+        koordynatyKartyY = 400;
+
+        path = new File("KartyPNG\\");
+        pngTalia = path.listFiles();
 
         gracz.pobierzPunkty().addListener((obs, old, newValue) -> {
             czatClient.setPunktacjaClientaLabel("Punktacja Klienta: " + newValue);
@@ -30,7 +44,9 @@ public class BlackJack {
 
     }
     public synchronized void zacznijGre () {
-//        rwl = new ReadWriteLock();
+        czatClient.noweRozdanie();
+        koordynatyKartyX = 10;
+
         graWToku = true;
         ++nrParti;
         czatClient.setClientHand("numer parti: " + nrParti + "\n");
@@ -49,8 +65,6 @@ public class BlackJack {
         kolejnaKartaGracza();
         kolejnaKartaDealera();
 
-
-
     }
 
     public void kolejnaKartaGracza () {
@@ -58,6 +72,14 @@ public class BlackJack {
         Karta karta = talia.losujKarte();
         czatClient.setClientHand(karta.toString()+"\n");
         gracz.dobierzKarte(karta);
+
+        for (int i = 0; i < pngTalia.length; i++)
+            if (pngTalia[i].toString().contains(karta.toString())) {
+                czatClient.dodajKarte(pngTalia[i], koordynatyKartyX, koordynatyKartyY);
+                koordynatyKartyX += 50;
+            }
+
+        koordynatyKartyX += 75;
     }
 
     public void kolejnaKartaDealera () {
@@ -70,7 +92,7 @@ public class BlackJack {
         return dealer.pobierzPunkty().get();
     }
     public void endGame() {
-        if (graWToku) {
+        if (graWToku && dealer.liczbaKart() > 1) {
             graWToku = false;
 
             int punktyDealera = dealer.pobierzPunkty().get();
