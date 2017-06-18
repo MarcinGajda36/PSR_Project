@@ -37,7 +37,7 @@ public class CzatClient extends JFrame {
     private String nazwaSerwera = "localhost";
     private Klient watekKlienta;
     private CzatClient instancjaKlienta;
-    private Czat serwer;
+    private Gra serwer;
     private ClientImpl klient;
     private BlackJack blackJack;
     private int liczbaZwycieztw;
@@ -298,7 +298,7 @@ public class CzatClient extends JFrame {
         public void run() {
             try {
                 Registry rejestr = LocateRegistry.getRegistry(host.getText());
-                serwer = (Czat) rejestr.lookup("RMIBlackjack");
+                serwer = (Gra) rejestr.lookup("RMIBlackjack");
                 String nick = "";
 
                 while (nick.isEmpty() || nick.length() < 3 || nick.length() > 9) {
@@ -306,7 +306,7 @@ public class CzatClient extends JFrame {
                 }
 
                 klient = new ClientImpl(serwer, instancjaKlienta, nick, liczbaZwycieztw);
-                serwer.dolacz(Czat.DOLACZ_COMMAND, klient);
+                serwer.dolacz(Gra.DOLACZ_COMMAND, klient);
 
                 blackJack.zacznijGre();
 

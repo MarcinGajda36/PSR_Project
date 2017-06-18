@@ -122,7 +122,7 @@ public class CzatServer extends JFrame {
                 }
             }
             try {
-                CzatImpl serwer = new CzatImpl(instancjaSerwera);
+                GraImpl serwer = new GraImpl(instancjaSerwera);
                 rejestr.rebind("RMIBlackjack", serwer);
                 wyswietlKomunikat("Serwer został‚ poprawnie zarejestrowany i uruchomiony.");
             } catch (Exception e) {

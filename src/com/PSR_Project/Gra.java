@@ -4,7 +4,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Vector;
 
-public interface Czat extends Remote {
+public interface Gra extends Remote {
 
     String DOLACZ_COMMAND = "DOLACZ_COMMAND";
 

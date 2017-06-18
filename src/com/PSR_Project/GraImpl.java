@@ -5,12 +5,12 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
 import java.util.Vector;
 
-public class CzatImpl extends UnicastRemoteObject implements Czat {
+public class GraImpl extends UnicastRemoteObject implements Gra {
 
     private Vector<Client> klienci = new Vector<>();
     private CzatServer serwer;
 
-    public CzatImpl(CzatServer serwer) throws RemoteException {
+    public GraImpl(CzatServer serwer) throws RemoteException {
         this.serwer = serwer;
     }
 
@@ -20,7 +20,7 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
     }
 
     public synchronized void dolacz(String command,Client n) throws RemoteException {
-        if (!command.equals(Czat.DOLACZ_COMMAND)){
+        if (!command.equals(Gra.DOLACZ_COMMAND)){
             serwer.wyswietlKomunikat("Proba polaczenia z blednym protokolem! " + n.pobierzNicka());
             return;
         }
@@ -46,6 +46,6 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
         klienci.remove(n);
         serwer.odswiezListe(klienci);
 
-        serwer.wyswietlKomunikat("Czat opuścił/a: " + n.pobierzNicka());
+        serwer.wyswietlKomunikat("Gra opuścił/a: " + n.pobierzNicka());
     }
 }
