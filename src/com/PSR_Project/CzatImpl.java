@@ -15,15 +15,13 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
     }
 
     @Override
-    public void wiadomosc(String nick, String w) throws RemoteException {
+    public synchronized void wiadomosc(String nick, String w) throws RemoteException {
         serwer.wyswietlKomunikat("Klient: " + nick + " " + w);
     }
 
     public synchronized void dolacz(Client n) throws RemoteException {
-
         klienci.add(n);
         serwer.odswiezListe(klienci);
-
         serwer.wyswietlKomunikat("Do czatu dołączył/a: " + n.pobierzNicka());
 
         for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
@@ -31,7 +29,7 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
             klient.bierzacaPunktacja(n.pobierzNicka(), klienci);
         }
     }
-    public void odswiezPunktacje(Vector<Client> list) throws RemoteException {
+    public synchronized void odswiezPunktacje(Vector<Client> list) throws RemoteException {
         serwer.odswiezListe(list);
         for (Iterator<Client> i = list.iterator(); i.hasNext();) {
             Client klient = i.next();

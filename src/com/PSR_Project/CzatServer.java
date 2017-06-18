@@ -1,15 +1,15 @@
 package com.PSR_Project;
 
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.rmi.registry.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Vector;
 
 public class CzatServer extends JFrame {
 
-    private Vector<Client> klienci = new Vector<>();
     //GUI
     private JButton uruchom, zatrzymaj;
     private JPanel panel;
@@ -20,6 +20,7 @@ public class CzatServer extends JFrame {
     //Serwer
     private int numerPortu = 1099;
     CzatServer instancjaSerwera;
+    private Serwer srw;
 
     public CzatServer() {
         super("Serwer");
@@ -44,11 +45,6 @@ public class CzatServer extends JFrame {
         zalogowani = new JList<>(listaZalogowanych);
         zalogowani.setFixedCellWidth(120);
 
-        ObslugaZdarzen obsluga = new ObslugaZdarzen();
-
-        uruchom.addActionListener(obsluga);
-        zatrzymaj.addActionListener(obsluga);
-
         panel.add(new JLabel("Port RMI: "));
         panel.add(port);
         panel.add(uruchom);
@@ -59,14 +55,10 @@ public class CzatServer extends JFrame {
         add(new JScrollPane(komunikaty), BorderLayout.CENTER);
 
         setVisible(true);
-    }
 
-    private class ObslugaZdarzen implements ActionListener {
-
-        private Serwer srw;
-
-        public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equals("Uruchom")) {
+        uruchom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 srw = new Serwer();
                 srw.start();
                 uruchom.setEnabled(false);
@@ -74,15 +66,19 @@ public class CzatServer extends JFrame {
                 port.setEnabled(false);
                 repaint();
             }
-            if (e.getActionCommand().equals("Zatrzymaj")) {
+        });
+        zatrzymaj.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 srw.kill();
                 zatrzymaj.setEnabled(false);
                 uruchom.setEnabled(true);
                 port.setEnabled(true);
                 repaint();
             }
-        }
+        });
     }
+
     public void odswiezListe(Vector<Client> lista) {
 
         listaZalogowanych.clear();
@@ -103,7 +99,7 @@ public class CzatServer extends JFrame {
 
         public void kill() {
             try {
-                rejestr.unbind("RMICzat");
+                rejestr.unbind("RMIBlackjack");
                 wyswietlKomunikat("Serwer został‚ wyrejestrowany.");
             } catch (Exception e) {
                 wyswietlKomunikat("Nie udało się wyrejestrować serwera.");
@@ -127,7 +123,7 @@ public class CzatServer extends JFrame {
             }
             try {
                 CzatImpl serwer = new CzatImpl(instancjaSerwera);
-                rejestr.rebind("RMICzat", serwer);
+                rejestr.rebind("RMIBlackjack", serwer);
                 wyswietlKomunikat("Serwer został‚ poprawnie zarejestrowany i uruchomiony.");
             } catch (Exception e) {
                 wyswietlKomunikat("Nie udało się zarejestrować i uruchomić serwera.");

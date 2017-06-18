@@ -10,7 +10,7 @@ public interface Czat extends Remote {
 
     void odswiezPunktacje(Vector<Client> list) throws RemoteException;
 
-    void wiadomosc (String nick, String w) throws RemoteException;
+    void wiadomosc(String nick, String w) throws RemoteException;
 
     void opusc(Client k) throws RemoteException;
 

@@ -54,10 +54,7 @@ public class CzatClient extends JFrame {
     public void setPunktacjaClientaLabel (String punktacja) {
         punktacjaClienta.setText(punktacja);
     }
-    public void setPunktacjaDealeraLabel (String punktacja) {
-        punktacjaDealera.setText(punktacja);
-
-    }
+    public void setPunktacjaDealeraLabel (String punktacja) { punktacjaDealera.setText(punktacja); }
 
     public CzatClient() {
         super("Klient");
@@ -104,8 +101,8 @@ public class CzatClient extends JFrame {
         kartyDealera.setBackground(Color.green);
 
         host = new JTextField(nazwaSerwera, 12);
-        polacz = new JButton("Połącz");
-        rozlacz = new JButton("Rozłącz");
+        polacz = new JButton("Polacz");
+        rozlacz = new JButton("Rozlacz");
         rozlacz.setEnabled(false);
 
         listaZalogowanych = new DefaultListModel<>();
@@ -129,11 +126,11 @@ public class CzatClient extends JFrame {
         dealerHand = new JTextArea(7,55);
 
         getContentPane().add(panel, BorderLayout.NORTH);
-        JScrollPane rekaKlienta = new JScrollPane(clientHand);
-        rekaKlienta.setBounds(191, 281, 281, 90);
+        JScrollPane rekaGracza = new JScrollPane(clientHand);
+        rekaGracza.setBounds(191, 281, 281, 90);
         JScrollPane rekaDealera = new JScrollPane(dealerHand);
         rekaDealera.setBounds(191, 155, 281, 90);
-        rekaKlienta.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        rekaGracza.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         rekaDealera.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         stol.setLayout(null);
 
@@ -142,8 +139,7 @@ public class CzatClient extends JFrame {
 
         stol.add(punktacjaDealera);
         stol.add(punktacjaClienta);
-        stol.add(rekaKlienta);
-
+        stol.add(rekaGracza);
         stol.add(kartyGracza);
 
         sterowanieRozgrywka.add(dobierz, BorderLayout.SOUTH);
@@ -166,7 +162,6 @@ public class CzatClient extends JFrame {
         blackJokerLabel.setIcon(new ImageIcon(blackJoker.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
         blackJokerLabel.setBounds(53, 198, 71, 108);
         stol.add(blackJokerLabel);
-
 
         redJokerLabel.setIcon(new ImageIcon(redJoker.getScaledInstance(70, 100, Image.SCALE_SMOOTH)));
         redJokerLabel.setBounds(543, 198, 71, 108);
@@ -218,19 +213,18 @@ public class CzatClient extends JFrame {
         });
         dobierz.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (blackJack.graWToku())
+                if (blackJack.graWToku()) {
                     blackJack.kolejnaKartaGracza();
-                else
+                } else {
                     dobierz.setEnabled(false);
+                }
             }
         } );
         stoj.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
                 while (blackJack.punktyDealera() < 17) {
                     blackJack.kolejnaKartaDealera();
                 }
-
                 blackJack.endGame();
             }
         } );
@@ -238,10 +232,8 @@ public class CzatClient extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 wlaczSterowanie();
-
                 setDealerHand("\n\n\n\n");
                 setClientHand("\n\n\n\n");
-
                 blackJack.zacznijGre();
             }
         });
@@ -306,7 +298,7 @@ public class CzatClient extends JFrame {
         public void run() {
             try {
                 Registry rejestr = LocateRegistry.getRegistry(host.getText());
-                serwer = (Czat) rejestr.lookup("RMICzat");
+                serwer = (Czat) rejestr.lookup("RMIBlackjack");
                 String nick = "";
 
                 while (nick.isEmpty() || nick.length() < 3 || nick.length() > 9) {
@@ -346,4 +338,3 @@ public class CzatClient extends JFrame {
         new CzatClient();
     }
 }
-
