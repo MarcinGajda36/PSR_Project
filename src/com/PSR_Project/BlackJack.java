@@ -85,7 +85,7 @@ public class BlackJack {
     public void endGame() {
         if (!graWToku())
             return;
-        
+
             graWToku = false;
 
             int punktyDealera = dealer.pobierzPunkty().get();
