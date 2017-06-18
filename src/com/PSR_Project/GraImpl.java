@@ -26,7 +26,7 @@ public class GraImpl extends UnicastRemoteObject implements Gra {
         }
         klienci.add(n);
         serwer.odswiezListe(klienci);
-        serwer.wyswietlKomunikat("Do czatu dołączył/a: " + n.pobierzNicka());
+        serwer.wyswietlKomunikat("Do czatu dolaczyl/a: " + n.pobierzNicka());
 
         for (Iterator<Client> i = klienci.iterator(); i.hasNext();) {
             Client klient = i.next();
@@ -46,6 +46,6 @@ public class GraImpl extends UnicastRemoteObject implements Gra {
         klienci.remove(n);
         serwer.odswiezListe(klienci);
 
-        serwer.wyswietlKomunikat("Gra opuścił/a: " + n.pobierzNicka());
+        serwer.wyswietlKomunikat("Gre opuscil/a: " + n.pobierzNicka());
     }
 }

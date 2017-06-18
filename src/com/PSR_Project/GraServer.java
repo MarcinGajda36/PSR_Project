@@ -88,7 +88,7 @@ public class GraServer extends JFrame {
                 listaZalogowanych.addElement(n.pobierzNicka());
                 System.out.println(n.pobierzNicka());
             } catch (Exception e) {
-                System.out.println("Błąd: " + e);
+                System.out.println("Blad: " + e);
             }
         }
     }
@@ -100,9 +100,9 @@ public class GraServer extends JFrame {
         public void kill() {
             try {
                 rejestr.unbind("RMIBlackjack");
-                wyswietlKomunikat("Serwer został‚ wyrejestrowany.");
+                wyswietlKomunikat("Serwer zostal wyrejestrowany.");
             } catch (Exception e) {
-                wyswietlKomunikat("Nie udało się wyrejestrować serwera.");
+                wyswietlKomunikat("Nie udało sie wyrejestrowac serwera.");
             }
         }
 
@@ -110,9 +110,9 @@ public class GraServer extends JFrame {
 
             try {
                 rejestr = LocateRegistry.createRegistry(new Integer(port.getText()));
-                wyswietlKomunikat("Utworzyłem nowy rejestr na porcie: " + port.getText());
+                wyswietlKomunikat("Utworzylem nowy rejestr na porcie: " + port.getText());
             } catch (Exception e) {
-                wyswietlKomunikat("Nie powiodło sie utworzenie rejestru...\nPróba skorzystania z istniejącego...");
+                wyswietlKomunikat("Nie powiodlo sie utworzenie rejestru...\nProba skorzystania z istniejacego...");
             }
             if (rejestr == null) {
                 try {
@@ -124,9 +124,9 @@ public class GraServer extends JFrame {
             try {
                 GraImpl serwer = new GraImpl(instancjaSerwera);
                 rejestr.rebind("RMIBlackjack", serwer);
-                wyswietlKomunikat("Serwer został‚ poprawnie zarejestrowany i uruchomiony.");
+                wyswietlKomunikat("Serwer zostal poprawnie zarejestrowany i uruchomiony.");
             } catch (Exception e) {
-                wyswietlKomunikat("Nie udało się zarejestrować i uruchomić serwera.");
+                wyswietlKomunikat("Nie udalo sie zarejestrowac i uruchomic serwera.");
             }
         }
     }
