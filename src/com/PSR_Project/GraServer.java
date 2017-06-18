@@ -102,7 +102,7 @@ public class GraServer extends JFrame {
                 rejestr.unbind("RMIBlackjack");
                 wyswietlKomunikat("Serwer zostal wyrejestrowany.");
             } catch (Exception e) {
-                wyswietlKomunikat("Nie udało sie wyrejestrowac serwera.");
+                wyswietlKomunikat("Nie udalo sie wyrejestrowac serwera.");
             }
         }
 

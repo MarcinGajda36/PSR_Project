@@ -95,7 +95,7 @@ public class BlackJack {
                 zwyciezca = "Kasyno";
             }
             else if (punktyGracza == 21 || punktyDealera > 21 || punktyGracza > punktyDealera) {
-                zwyciezca = "Gra";
+                zwyciezca = "Gracz";
                 graClient.wygranaPartia();
             }
 
