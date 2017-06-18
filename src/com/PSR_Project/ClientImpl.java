@@ -39,7 +39,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
     public void dodajZwycieztwo(int z) throws RemoteException {
         punktacja = z;
         odswiezPunktacje(list);
-        server.wiadomosc(pobierzNicka(), "Wygrał rozdanie");
+        server.wiadomosc(pobierzNicka(), "Wygral rozdanie");
     }
 }
 

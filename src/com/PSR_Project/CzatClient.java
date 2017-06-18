@@ -306,7 +306,7 @@ public class CzatClient extends JFrame {
                 }
 
                 klient = new ClientImpl(serwer, instancjaKlienta, nick, liczbaZwycieztw);
-                serwer.dolacz(klient);
+                serwer.dolacz(Czat.DOLACZ_COMMAND, klient);
 
                 blackJack.zacznijGre();
 

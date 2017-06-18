@@ -6,7 +6,9 @@ import java.util.Vector;
 
 public interface Czat extends Remote {
 
-    void dolacz(Client k) throws RemoteException;
+    String DOLACZ_COMMAND = "DOLACZ_COMMAND";
+
+    void dolacz(String command ,Client k) throws RemoteException;
 
     void odswiezPunktacje(Vector<Client> list) throws RemoteException;
 

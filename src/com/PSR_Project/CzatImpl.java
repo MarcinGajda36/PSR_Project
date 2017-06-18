@@ -19,7 +19,11 @@ public class CzatImpl extends UnicastRemoteObject implements Czat {
         serwer.wyswietlKomunikat("Klient: " + nick + " " + w);
     }
 
-    public synchronized void dolacz(Client n) throws RemoteException {
+    public synchronized void dolacz(String command,Client n) throws RemoteException {
+        if (!command.equals(Czat.DOLACZ_COMMAND)){
+            serwer.wyswietlKomunikat("Proba polaczenia z blednym protokolem! " + n.pobierzNicka());
+            return;
+        }
         klienci.add(n);
         serwer.odswiezListe(klienci);
         serwer.wyswietlKomunikat("Do czatu dołączył/a: " + n.pobierzNicka());
