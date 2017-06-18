@@ -8,7 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Vector;
 
-public class CzatServer extends JFrame {
+public class GraServer extends JFrame {
 
     //GUI
     private JButton uruchom, zatrzymaj;
@@ -19,10 +19,10 @@ public class CzatServer extends JFrame {
     private DefaultListModel<String> listaZalogowanych;
     //Serwer
     private int numerPortu = 1099;
-    CzatServer instancjaSerwera;
+    GraServer instancjaSerwera;
     private Serwer srw;
 
-    public CzatServer() {
+    public GraServer() {
         super("Serwer");
 
         instancjaSerwera = this;
@@ -137,7 +137,7 @@ public class CzatServer extends JFrame {
     }
 
     public static void main(String[] args) {
-        new CzatServer();
+        new GraServer();
     }
 }
 

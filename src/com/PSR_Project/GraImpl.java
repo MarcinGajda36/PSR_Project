@@ -8,9 +8,9 @@ import java.util.Vector;
 public class GraImpl extends UnicastRemoteObject implements Gra {
 
     private Vector<Client> klienci = new Vector<>();
-    private CzatServer serwer;
+    private GraServer serwer;
 
-    public GraImpl(CzatServer serwer) throws RemoteException {
+    public GraImpl(GraServer serwer) throws RemoteException {
         this.serwer = serwer;
     }
 

@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
-    private CzatClient klient;
+    private GraClient klient;
     private String nick;
     private Gra server;
 
@@ -14,7 +14,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 
     private Vector<Client> list;
 
-    public ClientImpl(Gra server , CzatClient klient, String nick, int punktacja) throws RemoteException {
+    public ClientImpl(Gra server , GraClient klient, String nick, int punktacja) throws RemoteException {
         this.server = server;
         this.klient = klient;
         this.nick = nick;

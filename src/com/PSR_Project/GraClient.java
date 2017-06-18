@@ -16,7 +16,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Vector;
 
-public class CzatClient extends JFrame {
+public class GraClient extends JFrame {
 
     //GUI
     private JButton polacz, rozlacz;
@@ -36,7 +36,7 @@ public class CzatClient extends JFrame {
     //Klient
     private String nazwaSerwera = "localhost";
     private Klient watekKlienta;
-    private CzatClient instancjaKlienta;
+    private GraClient instancjaKlienta;
     private Gra serwer;
     private ClientImpl klient;
     private BlackJack blackJack;
@@ -56,7 +56,7 @@ public class CzatClient extends JFrame {
     }
     public void setPunktacjaDealeraLabel (String punktacja) { punktacjaDealera.setText(punktacja); }
 
-    public CzatClient() {
+    public GraClient() {
         super("Klient");
 
         instancjaKlienta = this;
@@ -182,7 +182,7 @@ public class CzatClient extends JFrame {
         liczbaZwycieztw = 0;
 
         nastepneRozdanie.setEnabled(false);
-        blackJack = new BlackJack(CzatClient.this);
+        blackJack = new BlackJack(GraClient.this);
 
         // Listeners
         polacz.addActionListener(new ActionListener() {
@@ -335,6 +335,6 @@ public class CzatClient extends JFrame {
     }
 
     public static void main(String[] args) {
-        new CzatClient();
+        new GraClient();
     }
 }
